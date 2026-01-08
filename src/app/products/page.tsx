@@ -2,18 +2,55 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { products, categories } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
+import { apiClient } from '@/lib/api';
+import { Category, Product } from '@/types/api';
 
 export default function ProductsPage() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryParam);
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setSelectedCategory(categoryParam);
-  }, [categoryParam]);
+    loadCategories();
+  }, []);
+
+  useEffect(() => {
+    loadProducts();
+  }, [selectedCategory, searchQuery]);
+
+  const loadCategories = async () => {
+    try {
+      const response = await apiClient.getCategories();
+      if (response.success && response.data) {
+        setCategories(response.data.categories);
+      }
+    } catch (error) {
+      console.error('加载分类失败:', error);
+    }
+  };
+
+  const loadProducts = async () => {
+    setLoading(true);
+    try {
+      const response = await apiClient.getProducts({
+        category: selectedCategory || undefined,
+        search: searchQuery || undefined,
+      });
+
+      if (response.success && response.data) {
+        setProducts(response.data.products);
+      }
+    } catch (error) {
+      console.error('加载商品失败:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredProducts = products.filter((product) => {
     const matchesCategory = !selectedCategory || product.category === selectedCategory;
@@ -79,7 +116,11 @@ export default function ProductsPage() {
 
           {/* Product Grid */}
           <div className="flex-1">
-            {filteredProducts.length === 0 ? (
+            {loading ? (
+              <div className="bg-white rounded-xl p-12 text-center">
+                <p className="text-gray-500">加载中...</p>
+              </div>
+            ) : filteredProducts.length === 0 ? (
               <div className="bg-white rounded-xl p-12 text-center">
                 <p className="text-gray-500 text-lg">没有找到符合条件的商品</p>
               </div>

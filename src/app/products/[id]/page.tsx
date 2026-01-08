@@ -1,33 +1,76 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { products } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
+import { apiClient } from '@/lib/api';
+import { Product } from '@/types/api';
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const productId = params.id as string;
-  const product = products.find((p) => p.id === productId);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
-  if (!product) {
+  useEffect(() => {
+    loadProductDetail();
+  }, [productId]);
+
+  const loadProductDetail = async () => {
+    setLoading(true);
+    try {
+      // 获取商品详情
+      const productResponse = await apiClient.getProductDetail(productId);
+      if (productResponse.success && productResponse.data) {
+        setProduct(productResponse.data);
+      }
+
+      // 获取相关商品（同分类的其他商品）
+      const productsResponse = await apiClient.getProducts();
+      if (productsResponse.success && productsResponse.data) {
+        const related = productsResponse.data.products
+          .filter((p) => p.category === product?.data?.category && p.id !== productId)
+          .slice(0, 4);
+        setRelatedProducts(related);
+      }
+    } catch (error) {
+      console.error('加载商品详情失败:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sizes = ['S', 'M', 'L', 'XL'];
+
+  if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500 text-lg">商品不存在</p>
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="bg-white rounded-2xl p-12 text-center">
+            <p className="text-gray-500">加载中...</p>
+          </div>
+        </div>
       </div>
     );
   }
 
-  const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
-
-  const sizes = ['S', 'M', 'L', 'XL'];
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="bg-white rounded-2xl p-12 text-center">
+            <p className="text-gray-500 text-lg">商品不存在</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)

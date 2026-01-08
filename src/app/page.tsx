@@ -1,10 +1,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { categories, products } from '@/data/products';
 import ProductCard from '@/components/ProductCard';
+import { apiClient } from '@/lib/api';
 
-export default function Home() {
-  const featuredProducts = products.slice(0, 4);
+export default async function Home() {
+  // 获取分类和商品数据
+  const [categoriesResponse, productsResponse] = await Promise.all([
+    apiClient.getCategories(),
+    apiClient.getProducts({ pageSize: 4 }),
+  ]);
+
+  const categories = categoriesResponse.success ? categoriesResponse.data?.categories : [];
+  const products = productsResponse.success ? productsResponse.data?.products || [] : [];
 
   return (
     <div>
@@ -79,7 +86,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
+            {products.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

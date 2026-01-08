@@ -1,6 +1,28 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { apiClient } from '@/lib/api';
+import { Category } from '@/types/api';
 
 export default function Footer() {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const response = await apiClient.getCategories();
+      if (response.success && response.data) {
+        setCategories(response.data.categories);
+      }
+    } catch (error) {
+      console.error('加载分类失败:', error);
+    }
+  };
+
   return (
     <footer className="bg-gray-50 border-t border-gray-100 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -47,26 +69,16 @@ export default function Footer() {
           <div className="col-span-1">
             <h4 className="font-semibold text-gray-900 mb-4">商品分类</h4>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li>
-                <Link href="/products?category=dresses" className="hover:text-pink-500 transition-colors">
-                  连衣裙
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?category=tops" className="hover:text-pink-500 transition-colors">
-                  上衣
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?category=pants" className="hover:text-pink-500 transition-colors">
-                  裤子
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?category=outerwear" className="hover:text-pink-500 transition-colors">
-                  外套
-                </Link>
-              </li>
+              {categories.slice(0, 4).map((category) => (
+                <li key={category.id}>
+                  <Link
+                    href={`/products?category=${category.id}`}
+                    className="hover:text-pink-500 transition-colors"
+                  >
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 

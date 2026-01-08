@@ -1,10 +1,28 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { apiClient } from '@/lib/api';
+import { Category } from '@/types/api';
 
 export default function Header() {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [cartCount] = useState(0);
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const response = await apiClient.getCategories();
+      if (response.success && response.data) {
+        setCategories(response.data.categories);
+      }
+    } catch (error) {
+      console.error('加载分类失败:', error);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100">
@@ -23,15 +41,15 @@ export default function Header() {
             <Link href="/products" className="text-gray-700 hover:text-pink-500 transition-colors">
               全部商品
             </Link>
-            <Link href="/products?category=dresses" className="text-gray-700 hover:text-pink-500 transition-colors">
-              连衣裙
-            </Link>
-            <Link href="/products?category=tops" className="text-gray-700 hover:text-pink-500 transition-colors">
-              上衣
-            </Link>
-            <Link href="/products?category=outerwear" className="text-gray-700 hover:text-pink-500 transition-colors">
-              外套
-            </Link>
+            {categories.slice(0, 3).map((category) => (
+              <Link
+                key={category.id}
+                href={`/products?category=${category.id}`}
+                className="text-gray-700 hover:text-pink-500 transition-colors"
+              >
+                {category.name}
+              </Link>
+            ))}
           </nav>
 
           {/* Right Actions */}
