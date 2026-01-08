@@ -1,66 +1,126 @@
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "扣子编程 - AI 开发伙伴",
-  description: "扣子编程，你的 AI 开发伙伴已就位",
-};
+import Link from 'next/link';
+import Image from 'next/image';
+import { categories, products } from '@/data/products';
+import ProductCard from '@/components/ProductCard';
 
 export default function Home() {
+  const featuredProducts = products.slice(0, 4);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white text-black transition-colors duration-300 dark:bg-black dark:text-white">
-      {/* 主容器 */}
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between px-16 py-32 sm:items-start">
-        {/* 头部：Logo 和 产品名称 */}
-        <div className="flex items-center gap-3">
-          {/* 注意：生产环境建议使用 next/image 并配置 remotePatterns */}
-          <img
-            className="dark:invert"
-            src="https://lf3-static.bytednsdoc.com/obj/eden-cn/hkpzboz/coze_logo.png"
-            alt="扣子编程 Logo"
-            width={40}
-            height={40}
-            style={{ width: "40px", height: "40px", objectFit: "contain" }}
-          />
-          <span className="text-xl font-bold tracking-tight text-black dark:text-zinc-50">
-            扣子编程
-          </span>
+    <div>
+      {/* Hero Banner */}
+      <section className="relative h-[500px] bg-gradient-to-r from-pink-50 to-purple-50 flex items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-8 items-center">
+          <div className="space-y-6">
+            <h1 className="text-5xl font-bold text-gray-900">
+              发现你的
+              <span className="text-pink-500">优雅风格</span>
+            </h1>
+            <p className="text-lg text-gray-600">
+              精选高品质女装，为现代女性打造独特魅力
+            </p>
+            <div className="flex gap-4">
+              <Link
+                href="/products"
+                className="px-8 py-3 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition-colors"
+              >
+                立即选购
+              </Link>
+              <Link
+                href="/products?category=dresses"
+                className="px-8 py-3 border-2 border-pink-500 text-pink-500 rounded-full hover:bg-pink-50 transition-colors"
+              >
+                新品上市
+              </Link>
+            </div>
+          </div>
+          <div className="relative h-[400px]">
+            <Image
+              src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&h=400&fit=crop"
+              alt="Fashion"
+              fill
+              className="object-cover rounded-2xl shadow-2xl"
+            />
+          </div>
         </div>
+      </section>
 
-        {/* 中间内容区：主标题和副标题 */}
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xl text-4xl font-semibold leading-tight tracking-tight text-black dark:text-zinc-50">
-            扣子编程，你的 AI 开发伙伴已就位
-          </h1>
-          <p className="max-w-2xl text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            当前是空白入口文件，项目正在开发中，请稍候...
-            <br />
-            开发完成后界面将自动更新。如未自动更新成功，可以手动点击右上角刷新或重启按钮查看效果。
-          </p>
+      {/* Categories */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-12">热门分类</h2>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            {categories.map((category) => (
+              <Link
+                key={category.id}
+                href={`/products?category=${category.id}`}
+                className="group bg-gray-50 rounded-2xl p-8 text-center hover:bg-pink-50 transition-colors"
+              >
+                <div className="text-5xl mb-3">{category.icon}</div>
+                <h3 className="font-medium text-gray-900 group-hover:text-pink-500 transition-colors">
+                  {category.name}
+                </h3>
+              </Link>
+            ))}
+          </div>
         </div>
+      </section>
 
-        {/* 底部按钮区 */}
-        <div className="flex w-full flex-col gap-4 text-base font-medium sm:w-auto sm:flex-row">
-          {/* 按钮 1：前往首页 */}
-          <a
-            className="flex h-12 w-full min-w-[160px] items-center justify-center gap-2 rounded-full bg-black px-8 text-white transition-colors hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 md:w-auto"
-            href="https://code.coze.cn/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            前往首页
-          </a>
-
-          {/* 按钮 2：查看文档 */}
-          <a
-            className="flex h-12 w-full min-w-[160px] items-center justify-center rounded-full border border-solid border-black/[.08] px-8 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-auto"
-            href="https://docs.coze.cn/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            查看文档
-          </a>
+      {/* Featured Products */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-12">
+            <h2 className="text-3xl font-bold">精选推荐</h2>
+            <Link
+              href="/products"
+              className="text-pink-500 hover:text-pink-600 transition-colors"
+            >
+              查看全部 →
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
         </div>
-      </main>
+      </section>
+
+      {/* Features */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🚚</span>
+              </div>
+              <h3 className="font-semibold mb-2">快速配送</h3>
+              <p className="text-sm text-gray-600">全国包邮，3-5天送达</p>
+            </div>
+            <div>
+              <div className="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🔄</span>
+              </div>
+              <h3 className="font-semibold mb-2">七天退换</h3>
+              <p className="text-sm text-gray-600">不满意可退换货</p>
+            </div>
+            <div>
+              <div className="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🛡️</span>
+              </div>
+              <h3 className="font-semibold mb-2">正品保障</h3>
+              <p className="text-sm text-gray-600">100%正品保证</p>
+            </div>
+            <div>
+              <div className="w-16 h-16 bg-pink-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">💁</span>
+              </div>
+              <h3 className="font-semibold mb-2">贴心服务</h3>
+              <p className="text-sm text-gray-600">24小时客服在线</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
