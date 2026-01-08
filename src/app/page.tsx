@@ -20,35 +20,36 @@ export default async function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="relative h-[600px] bg-black text-white flex items-center">
+      <section className="relative h-[700px] bg-black text-white flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&h=900&fit=crop"
-            alt="Fashion"
+            src="https://shop.lily.cn/wp-content/uploads/2024/06/6401-768x725.png"
+            alt="LILY 2024秋冬新品"
             fill
-            className="object-cover opacity-60"
+            className="object-cover opacity-70"
             priority
           />
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-2xl">
-            <p className="text-sm uppercase tracking-[0.3em] mb-4">New Collection</p>
-            <h1 className="text-6xl md:text-7xl font-bold mb-6 tracking-tight">
-              24' 质感换新
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+          <div className="max-w-3xl">
+            <p className="text-sm uppercase tracking-[0.3em] mb-4 text-pink-300">LILY 2024秋冬</p>
+            <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">
+              质感换新
             </h1>
-            <p className="text-xl text-gray-200 mb-8">
-              LILY 2024 秋冬新品，重新定义职场女性时尚
+            <p className="text-xl text-gray-200 mb-8 leading-relaxed">
+              LILY 为职场女性打造的时尚单品<br />
+              质感与时尚的完美结合
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
                 href="/products?tag=new"
-                className="px-8 py-4 bg-white text-black rounded-none font-medium hover:bg-gray-100 transition-colors"
+                className="px-10 py-4 bg-white text-black rounded-none font-medium hover:bg-pink-50 transition-colors"
               >
                 立即选购
               </Link>
               <Link
                 href="/products"
-                className="px-8 py-4 border-2 border-white text-white rounded-none font-medium hover:bg-white hover:text-black transition-colors"
+                className="px-10 py-4 border-2 border-white text-white rounded-none font-medium hover:bg-white hover:text-black transition-colors"
               >
                 查看系列
               </Link>
@@ -67,34 +68,95 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {categories.slice(0, 3).map((category) => (
-              <Link
-                key={category.id}
-                href={`/products?category=${category.id}`}
-                className="group relative aspect-[3/4] overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gray-100">
-                  <Image
-                    src={
-                      category.id === 'dresses'
-                        ? 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop'
-                        : category.id === 'tops'
-                        ? 'https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=600&h=800&fit=crop'
-                        : 'https://images.unsplash.com/photo-1544022613-e87ca75a784a?w=600&h=800&fit=crop'
-                    }
-                    alt={category.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                </div>
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors" />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-                  <span className="text-6xl mb-4">{category.icon}</span>
-                  <h3 className="text-2xl font-medium">{category.name}</h3>
-                </div>
-              </Link>
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* 连衣裙 */}
+            <Link
+              href="/products?category=dresses"
+              className="group relative aspect-[3/4] overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gray-100">
+                <Image
+                  src="https://shop.lily.cn/wp-content/uploads/2024/06/O1CN01riIDuV1oJU5R3LFhw_1031105204-300x400.webp"
+                  alt="连衣裙"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                <h3 className="text-3xl font-medium mb-2">连衣裙</h3>
+                <span className="text-sm border-b-2 border-white pb-1">查看</span>
+              </div>
+            </Link>
+
+            {/* 上衣 */}
+            <Link
+              href="/products?category=tops"
+              className="group relative aspect-[3/4] overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gray-100">
+                <Image
+                  src="https://shop.lily.cn/wp-content/uploads/2024/06/O1CN01J6DCNN1oJU5YNTxo5_1031105204-300x400.webp"
+                  alt="上衣"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                <h3 className="text-3xl font-medium mb-2">上衣</h3>
+                <span className="text-sm border-b-2 border-white pb-1">查看</span>
+              </div>
+            </Link>
+
+            {/* 外套 */}
+            <Link
+              href="/products?category=outerwear"
+              className="group relative aspect-[3/4] overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gray-100">
+                <Image
+                  src="https://shop.lily.cn/wp-content/uploads/2024/06/2.jpg"
+                  alt="外套"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                <h3 className="text-3xl font-medium mb-2">外套</h3>
+                <span className="text-sm border-b-2 border-white pb-1">查看</span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Limited Time Sale Banner */}
+      <section className="relative h-[400px] bg-black text-white flex items-center overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="https://shop.lily.cn/wp-content/uploads/2024/06/640-2-685x1024.png"
+            alt="限时特惠"
+            fill
+            className="object-cover opacity-60"
+          />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+          <div className="max-w-2xl">
+            <p className="text-sm uppercase tracking-[0.3em] mb-3 text-pink-300">限时特惠</p>
+            <h2 className="text-5xl md:text-7xl font-bold mb-4 tracking-tight">
+              低至5折
+            </h2>
+            <p className="text-lg text-gray-200 mb-6">
+              LILY 秋冬精选系列，限时优惠
+            </p>
+            <Link
+              href="/products?tag=sale"
+              className="inline-block px-8 py-3 bg-pink-600 text-white rounded-none font-medium hover:bg-pink-700 transition-colors"
+            >
+              立即抢购
+            </Link>
           </div>
         </div>
       </section>

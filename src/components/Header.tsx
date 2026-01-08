@@ -82,8 +82,13 @@ export default function Header() {
             </button>
 
             {/* Logo */}
-            <Link href="/" className="flex-shrink-0">
-              <span className="text-3xl font-bold tracking-tight">LILY</span>
+            <Link href="/" className="flex-shrink-0 flex items-center gap-2">
+              <img
+                src="https://shop.lily.cn/wp-content/uploads/2024/06/cropped-lilylogo-180x180.png"
+                alt="LILY"
+                className="w-10 h-10"
+              />
+              <span className="text-2xl font-bold tracking-tight">LILY</span>
             </Link>
 
             {/* Navigation */}

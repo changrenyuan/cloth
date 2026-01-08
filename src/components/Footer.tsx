@@ -29,9 +29,16 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="col-span-1">
-            <h3 className="text-3xl font-bold mb-4 tracking-tight">LILY</h3>
+            <div className="flex items-center gap-2 mb-4">
+              <img
+                src="https://shop.lily.cn/wp-content/uploads/2024/06/cropped-lilylogo-180x180.png"
+                alt="LILY"
+                className="w-8 h-8"
+              />
+              <h3 className="text-3xl font-bold tracking-tight">LILY</h3>
+            </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              商务时尚的引领者，致力于为女性打造质感和时尚结合的服装。
+              商务时尚的引领者，致力于为职场女性打造质感和时尚结合的服装。
             </p>
             <div className="flex gap-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
