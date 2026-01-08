@@ -7,15 +7,15 @@ export default async function Home() {
   // 获取分类和商品数据
   const [categoriesResponse, productsResponse] = await Promise.all([
     apiClient.getCategories(),
-    apiClient.getProducts({ pageSize: 8 }),
+    apiClient.getProducts({ pageSize: 16 }),
   ]);
 
   const categories = categoriesResponse.success ? categoriesResponse.data?.categories : [];
   const products = productsResponse.success ? productsResponse.data?.products || [] : [];
 
-  // 分割商品：前4个为精选，后4个为新品
-  const featuredProducts = products.slice(0, 4);
-  const newProducts = products.slice(4, 8);
+  // 分割商品：前8个为精选，后8个为新品
+  const featuredProducts = products.slice(0, 8);
+  const newProducts = products.slice(8, 16);
 
   return (
     <div>
@@ -68,7 +68,7 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {/* 连衣裙 */}
             <Link
               href="/products?category=dresses"
@@ -84,27 +84,47 @@ export default async function Home() {
               </div>
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
               <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-                <h3 className="text-3xl font-medium mb-2">连衣裙</h3>
+                <h3 className="text-2xl font-medium mb-2">连衣裙</h3>
                 <span className="text-sm border-b-2 border-white pb-1">查看</span>
               </div>
             </Link>
 
-            {/* 上衣 */}
+            {/* 衬衫 */}
             <Link
-              href="/products?category=tops"
+              href="/products?category=shirts"
               className="group relative aspect-[3/4] overflow-hidden"
             >
               <div className="absolute inset-0 bg-gray-100">
                 <Image
                   src="https://shop.lily.cn/wp-content/uploads/2024/06/O1CN01J6DCNN1oJU5YNTxo5_1031105204-300x400.webp"
-                  alt="上衣"
+                  alt="衬衫"
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
               <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-                <h3 className="text-3xl font-medium mb-2">上衣</h3>
+                <h3 className="text-2xl font-medium mb-2">衬衫</h3>
+                <span className="text-sm border-b-2 border-white pb-1">查看</span>
+              </div>
+            </Link>
+
+            {/* 裤子 */}
+            <Link
+              href="/products?category=pants"
+              className="group relative aspect-[3/4] overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gray-100">
+                <Image
+                  src="https://shop.lily.cn/wp-content/uploads/2024/06/O1CN018rrp7t1oJU5XxZgH5_0-item_pic-300x400.webp"
+                  alt="裤子"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                <h3 className="text-2xl font-medium mb-2">裤子</h3>
                 <span className="text-sm border-b-2 border-white pb-1">查看</span>
               </div>
             </Link>
@@ -124,7 +144,7 @@ export default async function Home() {
               </div>
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
               <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-                <h3 className="text-3xl font-medium mb-2">外套</h3>
+                <h3 className="text-2xl font-medium mb-2">外套</h3>
                 <span className="text-sm border-b-2 border-white pb-1">查看</span>
               </div>
             </Link>
