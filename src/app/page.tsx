@@ -1,21 +1,53 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import ProductCard from '@/components/ProductCard';
 import { apiClient } from '@/lib/api';
+import { Product, Category } from '@/types/api';
 
-export default async function Home() {
-  // 获取分类和商品数据
-  const [categoriesResponse, productsResponse] = await Promise.all([
-    apiClient.getCategories(),
-    apiClient.getProducts({ pageSize: 16 }),
-  ]);
+export default function Home() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const categories = categoriesResponse.success ? categoriesResponse.data?.categories : [];
-  const products = productsResponse.success ? productsResponse.data?.products || [] : [];
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      const [categoriesResponse, productsResponse] = await Promise.all([
+        apiClient.getCategories(),
+        apiClient.getProducts({ pageSize: 16 }),
+      ]);
+
+      if (categoriesResponse.success && categoriesResponse.data) {
+        setCategories(categoriesResponse.data.categories);
+      }
+
+      if (productsResponse.success && productsResponse.data) {
+        setProducts(productsResponse.data.products || []);
+      }
+    } catch (error) {
+      console.error('加载数据失败:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // 分割商品：前8个为精选，后8个为新品
   const featuredProducts = products.slice(0, 8);
   const newProducts = products.slice(8, 16);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500">加载中...</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -198,11 +230,15 @@ export default async function Home() {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth={2}
+                strokeWidth={1.5}
                 stroke="currentColor"
                 className="w-4 h-4"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                />
               </svg>
             </Link>
           </div>
@@ -212,35 +248,16 @@ export default async function Home() {
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
-
-          <div className="mt-8 text-center md:hidden">
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
-            >
-              查看全部
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-4 h-4"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-              </svg>
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* New Arrivals */}
+      {/* New Products */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-end justify-between mb-12">
             <div>
-              <h2 className="text-4xl font-bold mb-2 tracking-tight">最新上架</h2>
-              <p className="text-gray-600">2024 秋冬新品系列</p>
+              <h2 className="text-4xl font-bold mb-2 tracking-tight">新品上市</h2>
+              <p className="text-gray-600">最新推出的时尚单品</p>
             </div>
             <Link
               href="/products?tag=new"
@@ -251,11 +268,15 @@ export default async function Home() {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                strokeWidth={2}
+                strokeWidth={1.5}
                 stroke="currentColor"
                 className="w-4 h-4"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                />
               </svg>
             </Link>
           </div>
@@ -264,140 +285,6 @@ export default async function Home() {
             {newProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
-          </div>
-
-          <div className="mt-8 text-center md:hidden">
-            <Link
-              href="/products?tag=new"
-              className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
-            >
-              查看全部
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={2}
-                stroke="currentColor"
-                className="w-4 h-4"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-              </svg>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Promotional Banner */}
-      <section className="relative h-[400px] bg-gray-900 text-white">
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=1600&h=600&fit=crop"
-            alt="Promotion"
-            fill
-            className="object-cover opacity-70"
-          />
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 h-full flex items-center">
-          <div className="max-w-xl">
-            <p className="text-sm uppercase tracking-[0.3em] mb-4">Special Offer</p>
-            <h2 className="text-5xl font-bold mb-4">限时特惠</h2>
-            <p className="text-xl text-gray-200 mb-6">
-              精选商品低至 5 折，限时抢购
-            </p>
-            <Link
-              href="/products?tag=sale"
-              className="inline-block px-8 py-4 bg-white text-black font-medium hover:bg-gray-100 transition-colors"
-            >
-              立即抢购
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-10 h-10"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">全国包邮</h3>
-              <p className="text-sm text-gray-600">满199元包邮</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-10 h-10"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">七天退换</h3>
-              <p className="text-sm text-gray-600">不满意可退换</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-10 h-10"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.745 3.745 0 011.043 3.296c.63 1.268 1.593 2.39 1.593 3.068z"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">正品保障</h3>
-              <p className="text-sm text-gray-600">100%正品保证</p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-10 h-10"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 20.25c-1.5 0-3-.375-4.125-1.125m7.5 0c1.5-.75 2.625-1.875 3.375-3.375M7.5 12h3v-3.75h4.5v4.5h-4.5V15c0-1.5-2.25-2.25-3-2.25m0 4.5v-2.25M12 20.25v-3m0-13.5v-3m3.75 9.75h4.5"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2">贴心服务</h3>
-              <p className="text-sm text-gray-600">24小时客服在线</p>
-            </div>
           </div>
         </div>
       </section>
