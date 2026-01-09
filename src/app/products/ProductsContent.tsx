@@ -8,16 +8,18 @@ import { Category, Product } from '@/types/api';
 
 export default function ProductsContent() {
   const searchParams = useSearchParams();
-  const categoryParam = searchParams.get('category');
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryParam);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // 从 URL 参数中获取分类
+    const categoryParam = searchParams.get('category');
+    setSelectedCategory(categoryParam);
     loadCategories();
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     loadProducts();
