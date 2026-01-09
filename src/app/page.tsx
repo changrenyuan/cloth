@@ -56,7 +56,7 @@ export default function Home() {
         <div className="absolute inset-0">
           <Image
             src="https://shop.lily.cn/wp-content/uploads/2024/06/6401-768x725.png"
-            alt="LILY 2024秋冬新品"
+            alt="花花家 2024秋冬新品"
             fill
             className="object-cover opacity-70"
             priority
@@ -64,12 +64,12 @@ export default function Home() {
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
           <div className="max-w-3xl">
-            <p className="text-sm uppercase tracking-[0.3em] mb-4 text-pink-300">LILY 2024秋冬</p>
+            <p className="text-sm uppercase tracking-[0.3em] mb-4 text-pink-300">花花家 2024秋冬</p>
             <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight">
               质感换新
             </h1>
             <p className="text-xl text-gray-200 mb-8 leading-relaxed">
-              LILY 为职场女性打造的时尚单品<br />
+              花花家 为职场女性打造的时尚单品<br />
               质感与时尚的完美结合
             </p>
             <div className="flex flex-wrap gap-4">
@@ -94,7 +94,7 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 tracking-tight">LILY 精选购</h2>
+            <h2 className="text-4xl font-bold mb-4 tracking-tight">花花家 精选购</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               为职场女性精心打造的时尚单品，质感与时尚的完美结合
             </p>
@@ -201,7 +201,7 @@ export default function Home() {
               低至5折
             </h2>
             <p className="text-lg text-gray-200 mb-6">
-              LILY 秋冬精选系列，限时优惠
+              花花家 秋冬精选系列，限时优惠
             </p>
             <Link
               href="/products?tag=sale"

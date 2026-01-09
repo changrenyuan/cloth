@@ -85,10 +85,10 @@ export default function Header() {
             <Link href="/" className="flex-shrink-0 flex items-center gap-2">
               <img
                 src="https://shop.lily.cn/wp-content/uploads/2024/06/cropped-lilylogo-180x180.png"
-                alt="LILY"
+                alt="花花家"
                 className="w-10 h-10"
               />
-              <span className="text-2xl font-bold tracking-tight">LILY</span>
+              <span className="text-2xl font-bold tracking-tight">花花家</span>
             </Link>
 
             {/* Navigation */}
@@ -109,7 +109,7 @@ export default function Header() {
                 href="/about"
                 className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
               >
-                关于LILY
+                关于花花家
               </Link>
             </nav>
 
@@ -202,7 +202,7 @@ export default function Header() {
             <nav className="flex flex-col gap-4">
               <Link href="/" className="text-sm font-medium text-gray-900">首页</Link>
               <Link href="/products" className="text-sm font-medium text-gray-900">服装品类</Link>
-              <Link href="/about" className="text-sm font-medium text-gray-900">关于LILY</Link>
+              <Link href="/about" className="text-sm font-medium text-gray-900">关于花花家</Link>
             </nav>
           </div>
         )}

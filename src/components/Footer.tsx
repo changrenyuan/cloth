@@ -32,10 +32,10 @@ export default function Footer() {
             <div className="flex items-center gap-2 mb-4">
               <img
                 src="https://shop.lily.cn/wp-content/uploads/2024/06/cropped-lilylogo-180x180.png"
-                alt="LILY"
+                alt="花花家"
                 className="w-8 h-8"
               />
-              <h3 className="text-3xl font-bold tracking-tight">LILY</h3>
+              <h3 className="text-3xl font-bold tracking-tight">花花家</h3>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">
               商务时尚的引领者，致力于为职场女性打造质感和时尚结合的服装。
@@ -140,7 +140,7 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-gray-400">
-              © 2024 LILY. All rights reserved.
+              © 2024 花花家. All rights reserved.
             </p>
             <div className="flex gap-6 text-sm text-gray-400">
               <a href="#" className="hover:text-white transition-colors">隐私政策</a>
