@@ -99,26 +99,17 @@ export default function Header() {
               >
                 首页
               </Link>
-              {categories.slice(0, 3).map((category) => (
-                <Link
-                  key={category.id}
-                  href={`/products?category=${category.id}`}
-                  className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
-                >
-                  {category.name}
-                </Link>
-              ))}
               <Link
-                href="/products?category=outerwear"
+                href="/products"
                 className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
               >
-                外套
+                服装品类
               </Link>
               <Link
-                href="/products?tag=sale"
-                className="text-sm font-medium text-pink-600 hover:text-pink-700 transition-colors"
+                href="/about"
+                className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors"
               >
-                特惠
+                关于LILY
               </Link>
             </nav>
 
@@ -210,21 +201,8 @@ export default function Header() {
           <div className="md:hidden border-t border-gray-100 py-4">
             <nav className="flex flex-col gap-4">
               <Link href="/" className="text-sm font-medium text-gray-900">首页</Link>
-              {categories.map((category) => (
-                <Link
-                  key={category.id}
-                  href={`/products?category=${category.id}`}
-                  className="text-sm font-medium text-gray-900"
-                >
-                  {category.name}
-                </Link>
-              ))}
-              <Link
-                href="/products?tag=sale"
-                className="text-sm font-medium text-pink-600"
-              >
-                特惠
-              </Link>
+              <Link href="/products" className="text-sm font-medium text-gray-900">服装品类</Link>
+              <Link href="/about" className="text-sm font-medium text-gray-900">关于LILY</Link>
             </nav>
           </div>
         )}
